@@ -1,17 +1,14 @@
-/* eslint-disable react/no-unescaped-entities */
+"use client";
 import Link from "next/link";
 import Image from "next/image";
-import login from "../../../../service/login";
+
+import { NextResponse } from "next/server";
+import loginForm from "@/components/login";
+import { useRouter } from "next/navigation";
 export default function Login() {
-  async function loginForm(formData) {
-    "use server";
-    const rawFormData = {
-      email: formData.get("email"),
-      password: formData.get("password"),
-    };
-    login(rawFormData);
-    console.log(rawFormData);
-  }
+  const router = useRouter();
+
+  router.push("/list");
   return (
     <>
       <div className="absolute pt-40 px-40">
@@ -30,7 +27,10 @@ export default function Login() {
       <div className="min-h-screen flex justify-center items-center">
         <div className="md:w-1/2 px-48">
           <h2 className="font-bold text-3xl text-[#002D74]">Login</h2>
-          <form action={loginForm} className="flex flex-col gap-6">
+          <form
+            action={(formData) => loginForm(formData)}
+            className="flex flex-col gap-6"
+          >
             <input
               className="p-2 mt-8 rounded-[8px] border"
               name="email"
@@ -76,7 +76,7 @@ export default function Login() {
               Login
             </button>
             <p className="text-[#D3D3D3]">
-              Didn't have an account yet?{" "}
+              Didnt have an account yet?{" "}
               <Link href={"/register"} className="text-blue-500">
                 Register
               </Link>

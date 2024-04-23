@@ -2,13 +2,17 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
+
 import registerHandler from "../../../../service/registerHandler";
+import { useRouter } from "next/navigation";
+
 export default function Register() {
   const { handleSubmit, register } = useForm();
+  const router = useRouter();
   const handleUserRegister = (data) => {
     console.log(data);
-
     registerHandler(data);
+    router.push("/list");
   };
   return (
     <>
@@ -131,11 +135,7 @@ export default function Register() {
             </div>
             <p className="text-[#D3D3D3]">
               Have you already an account?
-              <Link
-                href={"/login"}
-                className="text-blue-500"
-                
-              >
+              <Link href={"/login"} className="text-blue-500">
                 {" "}
                 Login
               </Link>

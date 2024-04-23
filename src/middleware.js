@@ -3,8 +3,8 @@ import { redirect } from "next/navigation";
 import { NextResponse } from "next/server";
 
 export default function middleware(request) {
-  const token = request.cookies.get("next-auth.session-token")?.value;
-  console.log("token : ", token);
+  const token = request.cookies.get("next-auth.crsf-token")?.value;
+  console.log("token Middleware : ", token);
   const path = request.nextUrl.pathname;
   if (!token && path != "/login") {
     return NextResponse.redirect(new URL("/login", request.url));
