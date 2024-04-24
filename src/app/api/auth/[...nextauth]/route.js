@@ -1,21 +1,29 @@
 import CredentialsProvider from "next-auth/providers/credentials";
-import NextAuth from "next-auth/next";
-const Handler = NextAuth({
+import nextAuth from "next-auth";
+import { loginForm } from "../../../../../service/loginForm";
+export const authOption = {
   providers: [
     CredentialsProvider({
-      credentials: {
-        email: {},
-        password: {},
+      async authorize(userDetail) {
+        const detail = {
+          email: userDetail.email,
+          password: userDetail.password,
+        };
+        console.log(detail);
+        const login = await loginForm(detail);
+        return login.token;
       },
     }),
   ],
-  async authorize(credentials, req) {
-    console.log(credentials);
+  callbacks: {
+    async jwt({ token, user }) {
+      return { ...token, ...user };
+    },
+    async session({ session, token }) {
+      session.user = token;
+      return session;
+    },
   },
-  session: {
-    strategy: "jwt",
-  },
-  pages: "/login",
-});
-
-export { Handler as GET, Handler as POST };
+};
+const handler = nextAuth(authOption);
+export { handler as GET, handler as POST };

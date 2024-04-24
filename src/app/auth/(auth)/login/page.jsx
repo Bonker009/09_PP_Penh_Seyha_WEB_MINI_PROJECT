@@ -1,14 +1,24 @@
 "use client";
 import Link from "next/link";
 import Image from "next/image";
-
-import { NextResponse } from "next/server";
-import loginForm from "@/components/login";
+import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 export default function Login() {
   const router = useRouter();
-
-  router.push("/list");
+  const formDataHander = async (data) => {
+    const userDetail = {
+      email: data.get("email"),
+      password: data.get("password"),
+    };
+    const response = signIn("credentials", {
+      redirect: false,
+      ...userDetail,
+    });
+    if ((await response).ok) {
+      
+      router.push("/list");
+    }
+  };
   return (
     <>
       <div className="absolute pt-40 px-40">
@@ -27,10 +37,7 @@ export default function Login() {
       <div className="min-h-screen flex justify-center items-center">
         <div className="md:w-1/2 px-48">
           <h2 className="font-bold text-3xl text-[#002D74]">Login</h2>
-          <form
-            action={(formData) => loginForm(formData)}
-            className="flex flex-col gap-6"
-          >
+          <form className="flex flex-col gap-6" action={formDataHander}>
             <input
               className="p-2 mt-8 rounded-[8px] border"
               name="email"
