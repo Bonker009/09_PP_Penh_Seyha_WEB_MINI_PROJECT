@@ -2,17 +2,28 @@
 import Link from "next/link";
 import Image from "next/image";
 import { useForm, SubmitHandler } from "react-hook-form";
-
-import registerHandler from "../../../../service/registerHandler";
 import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+import { registerForm } from "../../../../../service/registerForm";
 
 export default function Register() {
-  const { handleSubmit, register } = useForm();
   const router = useRouter();
-  const handleUserRegister = (data) => {
-    console.log(data);
-    registerHandler(data);
-    router.push("/list");
+  const formDataHander = async (data) => {
+    const userDetail = {
+      email: data.get("email"),
+      password: data.get("password"),
+      firstname: data.get("firstname"),
+      lastname: data.get("lastname"),
+      gender: data.get("gender"),
+      profile_url: "string",
+    };
+    console.log(userDetail);
+    const response = await registerForm(userDetail);
+    console.log(response);
+    if (response.status == 200) {
+      console.log("ok");
+      router.push("/auth/login");
+    }
   };
   return (
     <>
@@ -26,10 +37,7 @@ export default function Register() {
               alt="logo"
             />
           </div>
-          <form
-            className="max-w-full mx-auto"
-            onSubmit={handleSubmit(handleUserRegister)}
-          >
+          <form className="max-w-full mx-auto" action={formDataHander}>
             <div className="grid md:grid-cols-2 md:gap-6">
               <div className="relative z-0 w-full mb-5 group">
                 <label
@@ -41,9 +49,7 @@ export default function Register() {
                 <input
                   className="p-2 w-full rounded-[8px] border"
                   type="text"
-                  {...register("firstName", {
-                    required: "First Name is required",
-                  })}
+                  name="firstname"
                   placeholder="Enter your name"
                 />
               </div>
@@ -57,9 +63,7 @@ export default function Register() {
                 <input
                   className="p-2 w-full rounded-[8px] border"
                   type="text"
-                  {...register("lastName", {
-                    required: "Last Name is required",
-                  })}
+                  name="lastname"
                   placeholder="Enter your name"
                 />
               </div>
@@ -75,7 +79,7 @@ export default function Register() {
                 <input
                   className="p-2 w-full rounded-[8px] border"
                   type="email"
-                  {...register("email", { required: "Email is required" })}
+                  name="email"
                   placeholder="Email"
                 />
               </div>
@@ -88,8 +92,8 @@ export default function Register() {
                 </label>
                 <select
                   id="gender"
+                  name="gender"
                   className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  {...register("gender", { required: "Gender is required" })} // Register the select element
                 >
                   <option value="" disabled selected>
                     Choose your gender
@@ -110,9 +114,7 @@ export default function Register() {
                 <input
                   className="p-2 w-full rounded-[8px] border"
                   type="password"
-                  {...register("password", {
-                    required: "Password is required",
-                  })}
+                  name="password"
                   placeholder="•••••••••••"
                 />
               </div>
@@ -126,9 +128,6 @@ export default function Register() {
                 <input
                   className="p-2 w-full rounded-[8px] border"
                   type="password"
-                  {...register("confirmPassword", {
-                    required: "Confirm Password is required",
-                  })}
                   placeholder="•••••••••••"
                 />
               </div>
