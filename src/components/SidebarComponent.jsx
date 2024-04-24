@@ -1,9 +1,9 @@
-
 import Image from "next/image";
 import React from "react";
 import EditDeleteDropDownComponent from "./EditDeleteDropDownComponent";
 import WorkspacePopupComponent from "./WorkspacePopupComponent";
 import { getAllWorkspace } from "../../service/workspace/workspace";
+import Link from "next/link";
 
 export default async function SidebarComponent() {
   let response = await getAllWorkspace();
@@ -24,14 +24,18 @@ export default async function SidebarComponent() {
 
       {/* each workspace */}
       {response?.data?.map((item, key) => (
-        <div className="flex items-center mt-5 w-full" key={key}>
+        <Link
+          href={`/todo-list/${item.workSpaceId}`}
+          className="flex items-center mt-5 w-full px-2 "
+          key={key}
+        >
           <div className="rounded-full w-4 h-4 bg-todo"></div>
           <div className="flex justify-between w-full pl-3">
             <p>{item.workspaceName}</p>
 
             <EditDeleteDropDownComponent workspaceId={item.workSpaceId} />
           </div>
-        </div>
+        </Link>
       ))}
 
       {/* favorite*/}
@@ -47,12 +51,17 @@ export default async function SidebarComponent() {
       </div>
 
       {/* each favorite workspace */}
-      <div className="flex items-center mt-5 w-full">
-        <div className="rounded-full w-4 h-4 bg-workingOn"></div>
-        <div className="flex justify-between w-full pl-3">
-          <p>GKS Scholarship</p>
-        </div>
-      </div>
+      {response?.data
+        ?.filter((item) => item.isFavorite) 
+        .map((item, key) => (
+          <div className="flex items-center mt-5 w-full" key={key}>
+            <div className="rounded-full w-4 h-4 bg-todo"></div>
+            <div className="flex justify-between w-full pl-3">
+              <p>{item.workspaceName}</p>
+              <EditDeleteDropDownComponent workspaceId={item.workspaceId} />
+            </div>
+          </div>
+        ))}
     </div>
   );
 }

@@ -87,6 +87,34 @@ export const deleteWorkspaceById = async (id) => {
     return null;
   }
 };
+export const getWorkspaceById = async (id) => {
+  const session = await getServerSession(authOption);
+  const token = session.user.token;
+  console.log(token, "hello world");
+  try {
+    let response = await fetch(
+      `http://110.74.194.123:8989/api/todo/v1/workspaces/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    console.log("Response Found Id:", response);
+    if (!response.ok) {
+      console.error("Server responded with error:", response.status);
+      return null;
+    }
+
+    const result = await response.json();
+    console.log("Result Found:", result);
+    return result;
+  } catch (error) {
+    console.error("An error occurred:", error);
+    return null;
+  }
+};
 const getToken = async () => {
   const session = await getServerSession(authOption);
   const token = session.user.token;

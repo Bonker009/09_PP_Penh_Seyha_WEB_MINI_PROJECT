@@ -11,21 +11,8 @@ export default async function List() {
   const result = await getAllTasks();
   console.log(result);
   return (
-    <div className="content ml-8 py-4">
-      <ListBoardComponentHeader />
-      <div className="grid grid-cols-12 gap-3">
-        <div className="w-full  cols col-span-8">
-          {/* {data.map((item, index) => (
-            <Card {...item} key={index} />
-          ))} */}
-        </div>
-        <div className="col-span-4 w-full">
-          <MonthlyStatisticsComponent />
-          <div className="">
-            <AddNewTaskComponent />
-          </div>
-        </div>
-      </div>
+    <div className="grid grid-cols-12 gap-3">
+      <div className="w-full  cols col-span-8"></div>
     </div>
   );
 }

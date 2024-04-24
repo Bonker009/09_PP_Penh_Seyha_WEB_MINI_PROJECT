@@ -2,16 +2,18 @@ import Image from "next/image";
 import React from "react";
 import { addNewTask } from "../../service/tasks/task";
 
-export default async function AddNewTaskComponent() {
+export default async function AddNewTaskComponent({ id }) {
   const formDataHandler = async (newData) => {
     "use server";
     console.log(newData);
-    
     const formData = {
       taskTitle: newData.get("title"),
       description: newData.get("description"),
       tag: newData.get("tag"),
       dueDate: newData.get("dueDate"),
+      startDate: new Date(),
+      status: true,
+      workspaceId: id,
     };
     const response = await addNewTask(formData);
     console.log(response);
