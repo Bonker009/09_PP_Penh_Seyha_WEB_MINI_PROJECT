@@ -1,7 +1,21 @@
 import Image from "next/image";
 import React from "react";
+import { addNewTask } from "../../service/tasks/task";
 
-export default function AddNewTaskComponent() {
+export default async function AddNewTaskComponent() {
+  const formDataHandler = async (newData) => {
+    "use server";
+    console.log(newData);
+    
+    const formData = {
+      taskTitle: newData.get("title"),
+      description: newData.get("description"),
+      tag: newData.get("tag"),
+      dueDate: newData.get("dueDate"),
+    };
+    const response = await addNewTask(formData);
+    console.log(response);
+  };
   return (
     <div>
       <label htmlFor="my_modal_7" className="cursor-pointer">
@@ -43,7 +57,7 @@ export default function AddNewTaskComponent() {
             </label>
           </div>
 
-          <form className="space-y-1">
+          <form action={formDataHandler} className="space-y-1">
             {/* title */}
             <h3 className="text-lg">Title</h3>
             <input

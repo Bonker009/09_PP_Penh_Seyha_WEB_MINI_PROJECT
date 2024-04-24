@@ -11,19 +11,23 @@ export const authOption = {
         };
         console.log(detail);
         const login = await loginForm(detail);
-        return login.token;
+        // console.log(login);
+        return login;
       },
     }),
   ],
   callbacks: {
     async jwt({ token, user }) {
+      // console.log(token);
       return { ...token, ...user };
     },
-    async session({ session, token }) {
+    async session({ session, token, user }) {
       session.user = token;
+      // console.log(token, "hello", session);
       return session;
     },
   },
+  secret: process.env.NEXTAUTH_SECRET,
 };
 const handler = nextAuth(authOption);
 export { handler as GET, handler as POST };

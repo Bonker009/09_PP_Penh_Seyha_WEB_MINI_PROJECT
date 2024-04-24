@@ -15,8 +15,7 @@ export default function Login() {
       ...userDetail,
     });
     if ((await response).ok) {
-      
-      router.push("/list");
+      router.push("/todo-list");
     }
   };
   return (

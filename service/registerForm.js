@@ -1,7 +1,7 @@
 "use server";
 export const registerForm = async (userDetail) => {
     console.log(userDetail);
-  const res = await fetch(
+     const res = await fetch(
     "http://110.74.194.123:8989/api/todo/v1/auth/sign-up",
     {
       method: "POST",

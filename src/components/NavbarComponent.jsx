@@ -7,7 +7,7 @@ import React from "react";
 export default function NavbarComponent() {
   const pathname = usePathname();
   return (
-    <nav className={` border-b border-b-gray relative`}>
+    <nav className={`  relative`}>
       <div className="flex items-center py-4 pl-4 pr-10">
         {/* <a
           href="https://flowbite.com/"
@@ -187,8 +187,14 @@ export default function NavbarComponent() {
                 </Link>
               </li>
             </ul>
-            
-            <div className={`${pathname === "/todo-list" ? "border-b-2 border-b-blue-700 absolute bottom-0 w-20 left-2" : "border-b-2 border-b-blue-700 absolute bottom-0 w-90 left-24"}`}></div>
+
+            <div
+              className={`${
+                pathname === "/todo-list"
+                  ? "border-b-2 border-b-blue-700 absolute bottom-0 w-20 left-2"
+                  : "border-b-2 border-b-blue-700 absolute bottom-0 w-90 left-24"
+              }`}
+            ></div>
           </div>
         </div>
       </div>

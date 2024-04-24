@@ -1,12 +1,21 @@
 import Image from "next/image";
 import React from "react";
+import { addNewWorkSpace } from "../../service/workspace/workspace";
 
 export default function WorkspacePopupComponent() {
+  const newFormHandler = async (data) => {
+    "use server";
+    console.log(data, "workspace");
+    let response = await addNewWorkSpace({
+      workspaceName: data.get("workspaceName"),
+    });
+    console.log(response);
+  };
   return (
-    <div>
+    <form action={newFormHandler}>
       {/* The button to open modal */}
       <label htmlFor="my_modal_6" className="cursor-pointer">
-        <Image src={"/assets/icons/plus.svg"} width={22} height={22} />
+        <Image src={"/assets/icons/plus.svg"} width={22} height={22} alt="" />
       </label>
 
       {/* Put this part before </body> tag */}
@@ -21,8 +30,11 @@ export default function WorkspacePopupComponent() {
             className="mt-3 block border border-gray rounded-lg w-full py-2 px-5 focus:ring-blue-500 focus:border-blue-500 focus:outline-none focus:ring-1"
           />
           <div className="modal-action">
-            <label htmlFor="my_modal_6" className="bg-blue-600 rounded-lg text-white mr-3 h-12 px-5 flex items-center">
-              Create
+            <label
+              htmlFor="my_modal_6"
+              className="bg-blue-600 rounded-lg text-white mr-3 h-12 px-5 flex items-center"
+            >
+              <button>Submit</button>
             </label>
             <label htmlFor="my_modal_6" className="btn">
               Close!
@@ -30,6 +42,6 @@ export default function WorkspacePopupComponent() {
           </div>
         </div>
       </div>
-    </div>
+    </form>
   );
 }
